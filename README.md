@@ -1,5 +1,5 @@
 # Repozytorium: samochód – kamera BEV, map fitting i SLAM offline
-
+## Szczegółowy opis wyników pracy z tym oprogramowaniem jest w blogu: https://dr-mako.github.io/blog/
 
 To repozytorium zawiera narzędzia do analizy przejazdów małego pojazdu z kamerą (rybie oko) i markerami ArUco. Pipeline składa się z trzech głównych etapów:
 
