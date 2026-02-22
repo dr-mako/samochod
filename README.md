@@ -105,10 +105,10 @@ Dodatkowo są narzędzia diagnostyczne do wyrównania wyniku SLAM do GT (np. dop
 
 Katalog Slam_Offline zawiera:
 
-SLAM_stage_runtime_final.py
-SLAM_stage_calib_prod.py
-SLAM_stage_runtime_from_config.py
-slam_output_aligned_affine.py
+- SLAM_stage_runtime_final.py
+- SLAM_stage_calib_prod.py
+- SLAM_stage_runtime_from_config.py
+- slam_output_aligned_affine.py
 
 ---
 
