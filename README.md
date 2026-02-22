@@ -12,7 +12,6 @@ To repozytorium zawiera narzędzia do analizy przejazdów małego pojazdu z kame
 
 Repo jest podzielone na katalogi odpowiadające tym etapom.
 
-
 ---
 
 ## Struktura repozytorium
@@ -42,6 +41,8 @@ Narzędzia do SLAM offline:
 
 	- narzędzia diagnostyczne do wyrównania wyniku SLAM do Ground Truth (np. affine alignment).
 
+---
+
 ## Katalog FEV_BEV_Transform/ – przygotowanie transformacji BEV
 Celem jest wyznaczenie przekształcenia, które pozwala remapować obraz z kamery (FEV) do widoku z góry (BEV). W praktyce pipeline opiera się o ręcznie klikaną siatkę/szachownicę i późniejsze „oczyszczanie” punktów.
 
@@ -64,6 +65,8 @@ Pliki danych (przykładowo):
 - map.mat, map_inv.mat – mapy remapowania,
 - roi_mask.mat – maska obszaru użytecznego,
 - przykładowe klatki wejściowe frames_*.jpg.
+
+---
 
 ## Katalog MAP_FITTING/ – offline map fitting i kalibracja ekstrynsyki
 
@@ -89,4 +92,32 @@ Wyjścia m.in.: synced_with_traj.csv, synced_simple.csv, path.csv.
 
 ---
 
+## Katalog SlamOffline/ – SLAM offline
+Ten etap przechodzi od map fittingu do pełnego SLAM: trajektoria nie jest już parametrem stałym wynikającym z odometrii. Położenie trajektorii i landmarków są zmiennymi optymalizacji. Optymalizacja szuka kompromisu między:
+- zgodnością kolejnych póz z odometrią (ciągłość ruchu),
+- zgodnością obserwacji landmarków z ich stałymi pozycjami w świecie (domykanie pętli).
 
+W praktyce workflow jest dwuetapowy:
+1. etap kalibracyjny: estymacja globalnych biasów (np. skala BEV, korekty yaw, prosty parametr poślizgu),
+2. etap runtime offline: biasy zamrożone, a korygowane są tylko trajektoria i mapa.
+
+Dodatkowo są narzędzia diagnostyczne do wyrównania wyniku SLAM do GT (np. dopasowanie transformacji afinicznej dwóch chmur punktów).
+
+---
+
+Jak uruchamiać pipeline (wysoki poziom)
+
+1. Przygotuj transformację FEV→BEV oraz maskę ROI w FEV_BEV_Transform/ (wygeneruj map.mat, inv_map.mat, roi_mask.mat).
+
+2. Zsynchronizuj logi sterowania z klatkami kamery i wyznacz trajektorię z odometrii w MAP_FITTING/.
+
+3. Wykonaj batch ekstrakcję obserwacji ArUco (i ewentualnie pasów) oraz wyczyść obserwacje.
+
+4. (Opcjonalnie) skalibruj efektywną ekstrynsykę BEV↔pojazd offline.
+
+5. Uruchom SLAM offline w SlamOffline/:
+	- najpierw etap kalibracyjny,
+
+	- potem etap runtime offline,
+
+	- na końcu diagnostyka: porównanie do GT / alignment.
