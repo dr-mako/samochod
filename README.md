@@ -15,24 +15,12 @@ Repo jest podzielone na katalogi odpowiadające tym etapom.
 
 ---
 
-Struktura repozytorium
-
-- 
-
-
-FEV_BEV_Transform/
-
-Narzędzia do przygotowania map remapowania FEV ↔ BEV oraz maski ROI.
-
+## Struktura repozytorium
+- FEV_BEV_Transform/
+Narzędzia do przygotowania map remapowania FEV ↔ BEV oraz maski ROI. 
 Wynikiem są pliki opisujące transformację (mapy remapowania), które potem są używane w segmentacji pasów i detekcji ArUco.
-
-
-
-- 
-MAP_FITTING/
-
+- MAP_FITTING/
 Narzędzia do:
-
 
 	- synchronizacji logów sterowania z klatkami kamery,
 
@@ -45,16 +33,13 @@ Narzędzia do:
 	- offline kalibracji „efektywnej” ekstrynsyki kamery/BEV względem punktu kinematycznego pojazdu,
 
 	- dopasowania mapy landmarków do trajektorii (map fitting, bez korekty trajektorii).
-
-
-- 
-SlamOffline/
-
+- SlamOffline/
 Narzędzia do SLAM offline:
-
 
 	- etap kalibracyjny (estymacja globalnych biasów systematycznych na logach),
 
 	- etap „runtime” offline (biasy zamrożone, poprawiane są tylko: trajektoria i mapa),
 
 	- narzędzia diagnostyczne do wyrównania wyniku SLAM do Ground Truth (np. affine alignment).
+
+
