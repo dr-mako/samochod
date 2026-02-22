@@ -1,0 +1,11 @@
+numpy
+pandas
+matplotlib
+scikit-image
+opencv-python
+opencv-contrib-python
+pandas
+scipy
+scikit-image
+scikit-learn
+tqdm

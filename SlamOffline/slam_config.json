@@ -1,0 +1,12 @@
+{
+  "bev": {
+    "scale": 0.000967,
+    "Dx": 0.11125,
+    "Dy": 0.009,
+    "yaw_offset_deg": 2.2125
+  },
+  "motion": {
+    "yaw_gain": 1.0,
+    "curvature_bias": 1.0
+  }
+}
