@@ -42,4 +42,29 @@ Narzędzia do SLAM offline:
 
 	- narzędzia diagnostyczne do wyrównania wyniku SLAM do Ground Truth (np. affine alignment).
 
+## Katalog FEV_BEV_Transform/ – przygotowanie transformacji BEV
+Celem jest wyznaczenie przekształcenia, które pozwala remapować obraz z kamery (FEV) do widoku z góry (BEV). W praktyce pipeline opiera się o ręcznie klikaną siatkę/szachownicę i późniejsze „oczyszczanie” punktów.
+
+Typowy przepływ:
+
+ręczne oznaczenie punktów siatki → oczyszczenie/interpolacja → wyznaczenie map remapowania → maska ROI
+
+Zawartość (skrótowo):
+- oznaczanie_naroznikow.py, Ręczne oznaczanie narożników siatki/szachownicy w klatce FEV.
+- roi_pix_coord.py oraz oznaczanie_naroznikow_frames.py, Workflow do pracy na powiększonych fragmentach (zoom/ROI) w przypadku, gdy klikanie na pełnym obrazie jest za mało precyzyjne.
+- ptab_cleaning.py, Czyszczenie/interpolacja siatki oznaczonych punktów (m.in. PCA) w celu wyrównania błędów ręcznego klikania.
+- transformacja_make_maps.py, Buduje mapy remapowania (typowo map.mat i inv_map.mat), które opisują relację BEV ↔ FEV w postaci tablic Xmap, Ymap:
+
+	- Xmap(Hdst, Wdst) – z jakiej kolumny w obrazie źródłowym pobrać piksel,
+
+	- Ymap(Hdst, Wdst) – z jakiego wiersza w obrazie źródłowym pobrać piksel.
+- make_roi_mask.py, Generowanie maski ROI do odcięcia obszarów martwych / nieużytecznych po transformacji.
+
+Pliki danych (przykładowo):
+
+- P_tab.csv, Clean_P_tab.csv – surowe i oczyszczone punkty siatki,
+- map.mat, map_inv.mat – mapy remapowania,
+- roi_mask.mat – maska obszaru użytecznego,
+- przykładowe klatki wejściowe frames_*.jpg.
+
 
