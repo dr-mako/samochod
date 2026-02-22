@@ -103,6 +103,13 @@ W praktyce workflow jest dwuetapowy:
 
 Dodatkowo są narzędzia diagnostyczne do wyrównania wyniku SLAM do GT (np. dopasowanie transformacji afinicznej dwóch chmur punktów).
 
+Katalog Slam_Offline zawiera:
+
+SLAM_stage_runtime_final.py
+SLAM_stage_calib_prod.py
+SLAM_stage_runtime_from_config.py
+slam_output_aligned_affine.py
+
 ---
 
 Jak uruchamiać pipeline (wysoki poziom)
