@@ -8,7 +8,7 @@ import json
 # ============================================================
 # ŚCIEŻKI
 # ============================================================
-BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-5")
+BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
 
 TRAJ_PATH = BASE / "synced_with_traj.csv"
 OBS_PATH  = BASE / "out_lane_aruco_bev" / "summary_clean.csv"
@@ -28,14 +28,14 @@ yaw_offset_nominal = np.deg2rad(2.2125)
 # ============================================================
 # PARAMETRY SLAM
 # ============================================================
-SIGMA_XY  = 0.05
+SIGMA_XY  = 0.15
 SIGMA_PHI = 0.02
 
 W_ODOM = 1.0
 W_LAND = 1.0
 
-STRIDE = 10
-MAX_NFEV = 200
+STRIDE = 11 # krok pobierania próbek
+MAX_NFEV = 40 # maksimum iteracji
 
 # ============================================================
 # PREPROCESSING
@@ -43,28 +43,69 @@ MAX_NFEV = 200
 traj = pd.read_csv(TRAJ_PATH)
 obs  = pd.read_csv(OBS_PATH)
 
+# ---------------- TRAJECTORY ----------------
 traj = traj.sort_values("frame_id").reset_index(drop=True)
 traj = traj.replace([np.inf, -np.inf], np.nan)
 traj = traj.dropna(subset=["x", "y", "phi_rad"])
+
+# downsampling traj
 traj = traj.iloc[::STRIDE].reset_index(drop=True)
 
+# ---------------- OBSERVATIONS ----------------
 obs = obs.replace([np.inf, -np.inf], np.nan)
+
+# frame_id z nazwy pliku
 obs["frame_id"] = obs["frame"].str.extract(r"(\d+)").astype(int)
 
+# AUTO OFFSET (bez zgadywania)
+frame_offset = traj["frame_id"].min() - obs["frame_id"].min()
+obs["frame_id"] += frame_offset
+
+print("\nApplied frame_offset =", frame_offset)
+
+# landmark IDs
 obs = obs.dropna(subset=["smoothed_id"])
 obs["smoothed_id"] = obs["smoothed_id"].astype(int)
 
+# BEV coords
 obs["marker_bev_x"] = pd.to_numeric(obs["marker_bev_x"], errors="coerce")
 obs["marker_bev_y"] = pd.to_numeric(obs["marker_bev_y"], errors="coerce")
 
 obs = obs.dropna(subset=["marker_bev_x", "marker_bev_y"])
-obs = obs[obs["frame_id"] % STRIDE == 0]
+
+# outlier rejection
 obs = obs[obs["is_outlier"] == False]
+
+# ---------------- STRIDE-SAFE FRAME FILTER ----------------
+valid_frames = set(traj["frame_id"])
+obs = obs[obs["frame_id"].isin(valid_frames)]
+
+# ============================================================
+# DIAGNOSTYKA
+# ============================================================
+print("\n--- OBS STATS ---")
+print("Obs after filtering:", len(obs))
+print("Unique frames in obs:", obs["frame_id"].nunique())
+print(obs.groupby("frame_id").size().describe())
+
+print("\n--- FRAME RANGES ---")
+print("traj frame_id:", traj["frame_id"].min(), "→", traj["frame_id"].max())
+print("obs  frame_id:", obs["frame_id"].min(),  "→", obs["frame_id"].max())
+
+print("\nSample traj frames:", traj["frame_id"].head().tolist())
+print("Sample obs frames :", obs["frame_id"].head().tolist())
 
 # ============================================================
 # MAPOWANIA
 # ============================================================
 frame_to_idx = {fid: i for i, fid in enumerate(traj["frame_id"])}
+# diagnostyka
+matched = sum(fid in frame_to_idx for fid in obs["frame_id"])
+print("\n--- FRAME MATCH ---")
+print("Frames in obs:", obs["frame_id"].nunique())
+print("Frames matched with traj:", matched)
+if matched == 0:
+    print("❌ ERROR: No frames matched between OBS and TRAJ!")
 
 lm_ids = np.sort(obs["smoothed_id"].unique())
 lm_index = {lid: i for i, lid in enumerate(lm_ids)}
@@ -123,6 +164,10 @@ def residuals(x):
     lateral_slip   = x[-1]
 
     scale = scale_nominal * (1.0 + scale_bias)
+
+    # zabezpieczenie fizyczne
+    if scale <= 0:
+        return np.ones(10) * 1e6
 
     res = []
 
@@ -200,16 +245,48 @@ def residuals(x):
         wrap_pi(poses[0,2] - pose_anchor[2]) / SIGMA_PHI
     ])
 
+
+    if len(res) == 0:
+        print("⚠️ WARNING: No residuals generated!")
+
     return np.array(res)
 
 # ============================================================
 # SOLVER
 # ============================================================
+# diagnostyka
+r0 = residuals(x0)
+print("\n--- INITIAL RESIDUALS ---")
+print("Residual norm:", np.linalg.norm(r0))
+print("Num residuals:", len(r0))
+print("Any nonzero?:", np.any(np.abs(r0) > 1e-9))
+if np.linalg.norm(r0) == 0:
+    print("❌ ERROR: Residuals are zero → SLAM has no constraints!")
+
 print("\nStart CALIBRATION SLAM...")
+
+lower_bounds = np.hstack([
+    np.full(3*N, -np.inf),   # poses
+    np.full(2*M, -np.inf),   # landmarks
+    0.9,     # yaw_gain
+    -0.5,    # scale_bias  (max -50%)
+    0.9,     # curvature_bias
+    -0.5     # lateral_slip
+])
+
+upper_bounds = np.hstack([
+    np.full(3*N, np.inf),
+    np.full(2*M, np.inf),
+    1.1,     # yaw_gain
+    0.5,     # scale_bias
+    1.1,     # curvature_bias
+    0.5      # lateral_slip
+])
 
 result = least_squares(
     residuals,
     x0,
+    bounds=(lower_bounds, upper_bounds),
     method="trf",
     loss="huber",
     verbose=2,

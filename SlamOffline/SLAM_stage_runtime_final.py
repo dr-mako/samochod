@@ -7,7 +7,7 @@ from pathlib import Path
 # ============================================================
 # ŚCIEŻKI
 # ============================================================
-BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-5")
+BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-1")
 
 TRAJ_PATH = BASE / "synced_with_traj.csv"
 OBS_PATH  = BASE / "out_lane_aruco_bev" / "summary_clean.csv"

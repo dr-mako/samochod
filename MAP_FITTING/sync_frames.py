@@ -6,8 +6,8 @@ import pandas as pd
 from pathlib import Path
 
 
-in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-5")
-in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19")
+in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
+#in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19")
 OUT_PATH = in_dir_main / "out.txt"
 CAMERA_PATH = in_dir_main / "camera.txt"
 OUT_CSV = in_dir_main / "synced_raw.csv"

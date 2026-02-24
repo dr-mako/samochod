@@ -7,7 +7,7 @@ from pathlib import Path
 # ============================================================
 # ŚCIEŻKI
 # ============================================================
-BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-3")
+BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-1")
 TRAJ_PATH = BASE / "synced_with_traj.csv"
 LAND_PATH = BASE / "landmarks_mapfit.csv"
 
@@ -16,7 +16,6 @@ LAND_PATH = BASE / "landmarks_mapfit.csv"
 # ============================================================
 # [dx, dy, dyaw]
 x0 = np.array([0.1156, 0.0160, -1.81 * np.pi / 180.0])
-
 lb = np.array([0.0, -0.10, -10 * np.pi / 180]) # dolna granica
 ub = np.array([0.30,  0.10,  10 * np.pi / 180]) # górna granica
 

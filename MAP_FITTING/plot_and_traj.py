@@ -8,8 +8,8 @@ from pathlib import Path
 
 # ===== ŚCIEŻKI =====
 
-in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-5")
-in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19")
+in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
+#in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19")
 SYNCED_RAW_PATH = in_dir_main / "synced_raw.csv"
 OUT_WITH_TRAJ =  in_dir_main / "synced_with_traj.csv"
 OUT_SIMPLE =  in_dir_main / "synced_simple.csv"
@@ -21,7 +21,7 @@ R = 37.25 / 1000.0  # [m]
 L = 260.0 / 1000.0  # [m]
 
 # ===== OFFSETY (w stopniach) =====
-OFFSET_FWD = -2
+OFFSET_FWD = -0.6
 OFFSET_REV = 0
 OFFSET_MODE = "fwd"  # "auto" / "fwd" / "rev"
 V_DEADBAND = 0.02  # [m/s]
@@ -364,7 +364,7 @@ def main():
     ax.set_title("Trajektoria i błąd (elipsy)")
 
     ax.set_aspect("equal", adjustable="box")
-    ax.set_xlim([-0.75, 1.0])
+    #ax.set_xlim([-0.75, 1.0])
 
     for k in range(DRAW_FROM_K, n):
         if (k - 1) % DRAW_EVERY != 0:

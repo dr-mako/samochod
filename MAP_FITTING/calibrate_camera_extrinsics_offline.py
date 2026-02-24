@@ -8,7 +8,7 @@ from tqdm import tqdm
 # ŚCIEŻKI
 # ============================================================
 
-BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-5")
+BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
 
 TRAJ_PATH = BASE / "synced_with_traj.csv"
 LAND_PATH = BASE / "out_lane_aruco_bev" / "summary_clean.csv"
@@ -25,10 +25,10 @@ M_PER_PX = 1.0 / 1000.0
 # ZAKRES TESTU
 # ============================================================
 
-Dx_values = np.linspace(0.1, 0.2, 81)
-Dy_values = np.linspace(0, 0.02, 81)
-yaw_values = np.linspace(2*np.pi/180,
-                         3*np.pi/180,
+Dx_values = np.linspace(0.1, 0.5, 81)
+Dy_values = np.linspace(-0.75, 0.5, 81)
+yaw_values = np.linspace(-2*np.pi/180,
+                         2*np.pi/180,
                          81)
 
 MIN_OBS = 10

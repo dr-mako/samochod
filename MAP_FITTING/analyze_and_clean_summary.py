@@ -5,7 +5,7 @@ import numpy as np
 # CONFIG
 # ============================================================
 
-summary_path = r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-5\out_lane_aruco_bev\summary.csv"
+summary_path = r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2\out_lane_aruco_bev\summary.csv"
 out_path = summary_path.replace("summary.csv", "summary_clean.csv")
 
 jump_threshold = 100  # px

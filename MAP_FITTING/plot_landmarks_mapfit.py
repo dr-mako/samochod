@@ -8,7 +8,7 @@ from pathlib import Path
 # ŚCIEŻKI
 # ============================================================
 
-BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-17-3")
+BASE = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
 
 TRAJ_PATH = BASE / "synced_with_traj.csv"
 LAND_PATH = BASE / "out_lane_aruco_bev" / "summary_clean.csv"
@@ -40,11 +40,21 @@ D_X_FROM_C_M = 0.14
 D_Y_FROM_C_M = 0.01575
 YAW_OFFSET_RAD = -0.49999999999999994 * np.pi / 180.0
 
+# 2026-02-23-1:
+D_X_FROM_C_M = 0.175
+D_Y_FROM_C_M = 0.02
+YAW_OFFSET_RAD = 2.0 * np.pi / 180.0
+
+# 2026-02-23-2:
+D_X_FROM_C_M = 0.2150
+D_Y_FROM_C_M = 0.21875
+YAW_OFFSET_RAD = -0.45 * np.pi / 180.0
+
 # przed extrinsics 
 #(z modelu L/2 + R) L=260, R = 37.25 , d = 0.1673 m
-#D_X_FROM_C_M = 0.1673
-#D_Y_FROM_C_M = 0.0 
-#YAW_OFFSET_RAD = 0 * np.pi / 180.0
+D_X_FROM_C_M = 0.1673
+D_Y_FROM_C_M = 0.0 
+YAW_OFFSET_RAD = 0 * np.pi / 180.0
 
 
 IMAGE_H_PX = 420

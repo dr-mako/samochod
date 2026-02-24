@@ -16,7 +16,7 @@ from scipy.ndimage import gaussian_filter
 # ============================================================
 @dataclass
 class Config:
-    in_dir_main: str = r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19"
+    in_dir_main: str = r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2"
     frames_subdir: str = "frames"
 
     map_file: str = "map.mat"
