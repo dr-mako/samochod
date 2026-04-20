@@ -12,9 +12,9 @@ from scipy.interpolate import LinearNDInterpolator
 
 @dataclass(frozen=True)
 class Config:
-    img_path: str = r"frame_0021.jpg"
+    img_path: str = "frame_0012.jpg"
 
-    clean_ptab_mat: str = "Clean_P_tab.mat"
+    clean_ptab_mat: str = "P_map.mat"
     clean_ptab_var: str = "Clean_P_tab"
 
     height_y: int = 420

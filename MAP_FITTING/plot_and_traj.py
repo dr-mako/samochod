@@ -8,8 +8,8 @@ from pathlib import Path
 
 # ===== ŚCIEŻKI =====
 
-in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
-#in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19")
+#in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-23-2")
+in_dir_main = Path(r"C:\Users\Maciej Kozłowski\Desktop\Logi\2026-02-19")
 SYNCED_RAW_PATH = in_dir_main / "synced_raw.csv"
 OUT_WITH_TRAJ =  in_dir_main / "synced_with_traj.csv"
 OUT_SIMPLE =  in_dir_main / "synced_simple.csv"
@@ -21,7 +21,7 @@ R = 37.25 / 1000.0  # [m]
 L = 260.0 / 1000.0  # [m]
 
 # ===== OFFSETY (w stopniach) =====
-OFFSET_FWD = -0.6
+OFFSET_FWD = -2
 OFFSET_REV = 0
 OFFSET_MODE = "fwd"  # "auto" / "fwd" / "rev"
 V_DEADBAND = 0.02  # [m/s]
