@@ -4,3 +4,15 @@ EXcept
 map_inv.mat
 map.mat
 roi_mask.mat
+#ChArUcoCalibrate
+#multi_points_hybrid.csv
+#P_map.csv
+P_tab.csv
+reprojection_test.jpg
+#frame_0019.jpg
+#frame_0019_detected.jpg
+debug
+extract_charuco_ver_2.py
+#camera_model.npz
+bev_map.npz
+analyze_charuco_image.py
